@@ -1,0 +1,150 @@
+$(function(){
+	//设置默认地址
+	$("#setDefaultAddress").click(function(){
+		$.ajax({
+			url:"setDefaultAddressServlet",
+			type:"post",
+			data:{
+				id:$("#addressId").val()
+			},
+			success:function(data){
+				if(data=="success"){
+					alert("设置成功");
+				}else{
+					alert("设置失败");
+				}
+			}
+		})
+	})
+	//初始化地址信息
+	buildAddressInfo(1);
+	//构建地址信息
+	function buildAddressInfo(index){
+		$.ajax({
+			url:"memberAddressServlet",
+			type:"post",
+			data:{
+				index:index
+			},
+			success:function(data){
+				if(data.success==false){
+					$(".a_close").after("该用户还没有添加地址");
+					$(".address table").hide();
+				}else{
+					$(".address ul").remove();
+					var useAddress = data.item[0];
+					$("#name").text(useAddress.receiver);
+					$("#area").text(useAddress.area);
+					$("#address").text(useAddress.address);
+					$("#mobile").text(useAddress.mobile);
+					$("#phone").text(useAddress.mobile);
+					$("#email").text(useAddress.email);
+					$("#addressId").val(useAddress.id);
+					var $ul = $("<ul>");
+					$ul.css({
+						marginLeft:"400px",
+						fontSize:"15px"
+					});
+					//向左箭头
+					var $leftLi = $("<li>");
+					$leftLi.text("<");
+					$leftLi.css({
+						float:"left",
+						marginRight:"10px",
+						cursor:"pointer"
+					})
+					$leftLi.bind("click",function(){
+						return buildAddressInfo(data.prevPage);
+					});
+					$ul.append($leftLi);
+					//索引条
+					for(var i=0;i<data.pageCount;i++){
+						var $li = $("<li>");
+						if(i+1==data.nowPage)$li.css("color","red");//当前页标红色
+						$li.css({
+							float:"left",
+							marginRight:"10px",
+							cursor:"pointer"
+						})
+						$li.text(i+1);
+						$li.bind("click",function(){
+							return buildAddressInfo($(this).text());
+						})
+						$ul.append($li);
+					}
+					var $rightLi = $("<li>");
+					$rightLi.text(">");
+					$rightLi.css({
+						float:"left",
+						marginRight:"10px",
+						cursor:"pointer"
+					})
+					$rightLi.bind("click",function(){
+						return buildAddressInfo(data.nextPage);
+					});					
+					$ul.append($rightLi);
+					$(".address").append($ul);
+				}
+				
+			}
+		})
+	}
+	$("div.mem_tit").click(function(){
+		$("#myform").submit();
+		return false;
+	})
+	$("#myform").validate({
+		rules:{
+			country:{
+				required:true
+			},
+			province:{
+				required:true
+			},
+			city:{
+				required:true
+			},
+			area:{
+				required:true
+			},
+			name:{
+				required:true
+			},
+			email:{
+				required:true
+			},
+			address:{
+				required:true
+			},
+			mobile:{
+				required:true
+			},
+		},
+		messages:{
+			country:{
+				required:"请选择国家"
+			},
+			province:{
+				required:"请选择省份"
+			},
+			city:{
+				required:"请选择城市"
+			},
+			area:{
+				required:"请选择区域"
+			},
+			name:{
+				required:"请输入姓名"
+			},
+			email:{
+				required:"请输入邮箱"
+			},
+			address:{
+				required:"请输入地址"
+			},
+			mobile:{
+				required:"请输入手机号码"
+			},
+		}
+	})
+})

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>easybuy</display-name>
+  <welcome-file-list>
+    <welcome-file>toIndex</welcome-file>
+  </welcome-file-list>
+  <filter>
+  <filter-name>LoginFilter</filter-name>
+  <filter-class>com.easybuy.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  <filter-name>LoginFilter</filter-name>
+  <url-pattern>/addAddressServlet</url-pattern>
+  <url-pattern>/buyCarHandleServlet</url-pattern>
+  <url-pattern>/buyCarServlet</url-pattern>
+  <url-pattern>/buyCarThreeServlet</url-pattern>
+  <url-pattern>/buyCarTwoServlet</url-pattern>
+  <url-pattern>/memberAddressServlet</url-pattern>
+  <url-pattern>/memberOrderServlet</url-pattern>  
+  <url-pattern>/news</url-pattern>   
+  <url-pattern>/setDefaultAddressServlet</url-pattern>  
+  <url-pattern>/Member_Address.jsp</url-pattern>     
+  </filter-mapping>
+</web-app>
